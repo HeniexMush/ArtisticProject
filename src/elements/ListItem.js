@@ -1,17 +1,22 @@
 import { Feather } from '@expo/vector-icons';
 import { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Button, FlatList, Image } from 'react-native';
+import { StyleSheet, Text, View, Button, FlatList, Image, Modal, TouchableHighlight } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 
-const ListItem = () => {
+const ListItem = (modalVisible, setModalVisible) => {
 
-    const Item = ({ title, id, image_id }) => {
+
+ 
+    const Item = ({ title, id, image_id,}) => {
 
       const imageId = image_id
       const artworkImageUrl = 'https://www.artic.edu/iiif/2/'+imageId+'/full/843,/0/default.jpg';
       
+
       if (imageId !=null) {
         return (
+      
+        <TouchableHighlight onPress={()=> setModalVisible(!modalVisible)} underlayColor='lightgray'>
           <View style={styles.listelement}>
             <View style={styles.column}>
               <Image source={{uri: artworkImageUrl}} style={styles.image}/>
@@ -28,6 +33,7 @@ const ListItem = () => {
                 />
             </View>
           </View>
+        </TouchableHighlight>
         )
       } else {
         return (
@@ -53,7 +59,7 @@ const ListItem = () => {
       }
     
     const renderItem = ({ item }) => (
-        <Item title={item.title} id={item.id} image_id={item.image_id}/>
+        <Item title={item.title} id={item.id} image_id={item.image_id} />
     )
     
     return renderItem
@@ -87,6 +93,7 @@ const styles = StyleSheet.create({
     color:'white',
     textAlign: 'center',
   },
+
 });
 
 
