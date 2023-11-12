@@ -7,9 +7,6 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 
-
- 
-
 const Tab = createBottomTabNavigator();
 
 const TabsGenerate = () => {
@@ -26,8 +23,8 @@ const TabsGenerate = () => {
         },
         headerTitleStyle: {
           fontWeight: 'bold',
-          fontSize: 29,
-          color: 'white',
+          fontSize: 25,
+          color: 'white'
         },
         headerTitleAlign: 'center'
       }}

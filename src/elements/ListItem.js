@@ -1,62 +1,41 @@
 import { Feather } from '@expo/vector-icons';
 import { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Button, TouchableHighlight, Modal } from 'react-native';
+import { StyleSheet, Text, View, Button, FlatList, Image } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 
-const ListItem = ({ title, id, image_id, openDetail }) => {
+const ListItem = () => {
 
-
+    const Item = ({ title, id, image_id }) => {
 
       const imageId = image_id
       const artworkImageUrl = 'https://www.artic.edu/iiif/2/'+imageId+'/full/843,/0/default.jpg';
+      //fix when id is null
 
-      if (imageId !=null) { 
-          return (
-          <TouchableHighlight onPress={openDetail} underlayColor="lightgray">
-            <View style={styles.listelement}>
-              <View style={styles.column}>
-                <Image source={{uri: artworkImageUrl}} style={styles.image}/>
-              </View>
-
-              <View style={styles.column}>
-                <Text style={styles.text}>{title}</Text>
-              </View>
-              <View style={styles.column}>
-                <AntDesign 
-                  name="like2"
-                  size={20}
-                  color={'blue'}
-                  />
-              </View>
+        return (
+          <View style={styles.listelement}>
+            <View style={styles.column}>
+              <Image source={{uri: artworkImageUrl}} style={styles.image}/>
             </View>
-          </TouchableHighlight>
-          )
-        } else {
-          return (
-          <TouchableHighlight onPress={openDetail} underlayColor="lightgray">
-            <View style={styles.listelement}>
-              <View style={styles.column}>
-                <Image source={require('../../assets/missing.jpg')} style={styles.image}/>
-              </View>
 
-              <View style={styles.column}>
-                <Text style={styles.text}>{title}</Text>
-              </View>
-              <View style={styles.column}>
-                <AntDesign 
-                  name="like2"
-                  size={20}
-                  color={'blue'}
-                  />
-              </View>
+            <View style={styles.column}>
+              <Text style={styles.text}>{title}</Text>
             </View>
-          </TouchableHighlight>
-          )
-        }
+            <View style={styles.column}>
+              <AntDesign 
+                name="like2"
+                size={20}
+                color={'blue'}
+                />
+            </View>
+          </View>
+        )
+      }
     
-  
+    const renderItem = ({ item }) => (
+        <Item title={item.title} id={item.id} image_id={item.image_id}/>
+    )
     
-
+    return renderItem
 }
 
 const styles = StyleSheet.create({
@@ -90,5 +69,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default ListItem;
-
+export default ListItem
