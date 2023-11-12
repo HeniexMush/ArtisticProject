@@ -9,8 +9,8 @@ const ListItem = () => {
 
       const imageId = image_id
       const artworkImageUrl = 'https://www.artic.edu/iiif/2/'+imageId+'/full/843,/0/default.jpg';
-      //fix when id is null
-
+      
+      if (imageId !=null) {
         return (
           <View style={styles.listelement}>
             <View style={styles.column}>
@@ -29,6 +29,27 @@ const ListItem = () => {
             </View>
           </View>
         )
+      } else {
+        return (
+            <View style={styles.listelement}>
+            <View style={styles.column}>
+              <Image source={require('../../assets/missing.jpg')} style={styles.image}/>
+            </View>
+
+            <View style={styles.column}>
+              <Text style={styles.text}>{title}</Text>
+            </View>
+            <View style={styles.column}>
+              <AntDesign 
+                name="like2"
+                size={20}
+                color={'blue'}
+                />
+            </View>
+          </View>
+        )
+      }
+
       }
     
     const renderItem = ({ item }) => (
