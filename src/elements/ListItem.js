@@ -3,21 +3,20 @@ import { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Button, FlatList, Image, Modal, TouchableHighlight } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 
-
-const ListItem = (modalVisible, setModalVisible, setModalData, getIdOnClick) => {
+const ListItem = (modalVisible, setModalVisible) => {
 
 
  
-    const Item = ({ title, id, image_id}) => {
+    const Item = ({ title, id, image_id,}) => {
 
       const imageId = image_id
       const artworkImageUrl = 'https://www.artic.edu/iiif/2/'+imageId+'/full/843,/0/default.jpg';
       
-      
 
       if (imageId !=null) {
         return (
-        <TouchableHighlight onPress={()=> {setModalVisible(!modalVisible)}} onPressIn={() => {setModalData(id); getIdOnClick()}} underlayColor='lightgray'>
+      
+        <TouchableHighlight onPress={()=> setModalVisible(!modalVisible)} underlayColor='lightgray'>
           <View style={styles.listelement}>
             <View style={styles.column}>
               <Image source={{uri: artworkImageUrl}} style={styles.image}/>
@@ -38,7 +37,6 @@ const ListItem = (modalVisible, setModalVisible, setModalData, getIdOnClick) => 
         )
       } else {
         return (
-          <TouchableHighlight onPress={()=> {setModalVisible(!modalVisible); getIdOnClick()}} onPressIn={() => setModalData(id)} underlayColor='lightgray'>
             <View style={styles.listelement}>
             <View style={styles.column}>
               <Image source={require('../../assets/missing.jpg')} style={styles.image}/>
@@ -55,7 +53,6 @@ const ListItem = (modalVisible, setModalVisible, setModalData, getIdOnClick) => 
                 />
             </View>
           </View>
-          </TouchableHighlight>
         )
       }
 
