@@ -11,7 +11,7 @@ const FetchApiData = (setApiData, setCurrentPage, setIsLoading, setIsEndReached)
             setApiData((prevData) => [...prevData, ...data.data]);
             setCurrentPage(currentPage + 1);
             setIsEndReached(false);
-            console.log(data.data);
+            console.log(data.data)
 
 
         } catch (error) {
