@@ -5,13 +5,13 @@ const FetchApiData = (setApiData, setCurrentPage, setIsLoading, setIsEndReached)
     const fetchData = async (currentPage) => {
         try {
             setIsLoading(true);
-            const response = await fetch(`https://api.artic.edu/api/v1/artworks?page=${currentPage}&limit=30&fields=title,id,image_id`);
+            const response = await fetch(`https://api.artic.edu/api/v1/artworks?page=${currentPage}&limit=15&fields=title,id,image_id,date_display,dimensions,artist_title`);
             const data = await response.json();
 
             setApiData((prevData) => [...prevData, ...data.data]);
             setCurrentPage(currentPage + 1);
             setIsEndReached(false);
-            console.log(data.data);
+            console.log(data.data)
 
 
         } catch (error) {

@@ -3,20 +3,21 @@ import { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Button, FlatList, Image, Modal, TouchableHighlight } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 
-const ListItem = (modalVisible, setModalVisible) => {
+
+const ListItem = (modalVisible, setModalVisible, setItemId, setDetailTitle,setDetailDate,setDetailImage,setDetailDimensions,setDetailArtist) => {
 
 
  
-    const Item = ({ title, id, image_id,}) => {
+    const Item = ({ title, id, image_id, dimensions,artist_title,date_display}) => {
 
       const imageId = image_id
       const artworkImageUrl = 'https://www.artic.edu/iiif/2/'+imageId+'/full/843,/0/default.jpg';
       
+      
 
       if (imageId !=null) {
         return (
-      
-        <TouchableHighlight onPress={()=> setModalVisible(!modalVisible)} underlayColor='lightgray'>
+          <TouchableHighlight onPress={()=> {setModalVisible(!modalVisible)}}  onPressIn={()=> {{setItemId(id);setDetailTitle(title);setDetailDate(date_display);setDetailImage(artworkImageUrl.toString());setDetailDimensions(dimensions);setDetailArtist(artist_title)}}} underlayColor='lightgray'>
           <View style={styles.listelement}>
             <View style={styles.column}>
               <Image source={{uri: artworkImageUrl}} style={styles.image}/>
@@ -37,6 +38,7 @@ const ListItem = (modalVisible, setModalVisible) => {
         )
       } else {
         return (
+          <TouchableHighlight onPress={()=> {setModalVisible(!modalVisible)}}  onPressIn={()=> {{setItemId(id);setDetailTitle(title);setDetailDate(date_display);setDetailImage(null);setDetailDimensions(dimensions);setDetailArtist(artist_title)}}} underlayColor='lightgray'>
             <View style={styles.listelement}>
             <View style={styles.column}>
               <Image source={require('../../assets/missing.jpg')} style={styles.image}/>
@@ -53,13 +55,14 @@ const ListItem = (modalVisible, setModalVisible) => {
                 />
             </View>
           </View>
+          </TouchableHighlight>
         )
       }
 
       }
     
     const renderItem = ({ item }) => (
-        <Item title={item.title} id={item.id} image_id={item.image_id} />
+        <Item title={item.title} id={item.id} image_id={item.image_id} dimensions={item.dimensions} artist_title={item.artist_title} date_display={item.date_display}/>
     )
     
     return renderItem
