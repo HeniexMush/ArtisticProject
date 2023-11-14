@@ -17,44 +17,53 @@ const ListItem = (modalVisible, setModalVisible, setItemId, setDetailTitle,setDe
 
       if (imageId !=null) {
         return (
-          <TouchableHighlight onPress={()=> {setModalVisible(!modalVisible)}}  onPressIn={()=> {{setItemId(id);setDetailTitle(title);setDetailDate(date_display);setDetailImage(artworkImageUrl.toString());setDetailDimensions(dimensions);setDetailArtist(artist_title)}}} underlayColor='lightgray'>
-          <View style={styles.listelement}>
-            <View style={styles.column}>
-              <Image source={{uri: artworkImageUrl}} style={styles.image}/>
-            </View>
+          <TouchableHighlight onPress={()=> {setModalVisible(!modalVisible)}}  onPressIn={()=> {{setItemId(id);setDetailTitle(title);setDetailDate(date_display);setDetailImage(image_id);setDetailDimensions(dimensions);setDetailArtist(artist_title)}}} underlayColor='lightgray'>
+            <View>
+              <View style={styles.listelement}>
+              
 
-            <View style={styles.column}>
-              <Text style={styles.text}>{title}</Text>
+              
+                <Text style={styles.text}>{title}</Text>
+              
+              
+                <AntDesign 
+                  name="like2"
+                  size={20}
+                  color={'blue'}
+
+                  style={styles.icon}
+                  />
+              
+              </View>
+              <View>
+                <Image source={{uri: artworkImageUrl}} style={styles.image}/>
+              </View>
             </View>
-            <View style={styles.column}>
-              <AntDesign 
-                name="like2"
-                size={20}
-                color={'blue'}
-                />
-            </View>
-          </View>
         </TouchableHighlight>
         )
       } else {
         return (
           <TouchableHighlight onPress={()=> {setModalVisible(!modalVisible)}}  onPressIn={()=> {{setItemId(id);setDetailTitle(title);setDetailDate(date_display);setDetailImage(null);setDetailDimensions(dimensions);setDetailArtist(artist_title)}}} underlayColor='lightgray'>
-            <View style={styles.listelement}>
-            <View style={styles.column}>
-              <Image source={require('../../assets/missing.jpg')} style={styles.image}/>
-            </View>
+            <View>
+              <View style={styles.listelement}>
+              
 
-            <View style={styles.column}>
-              <Text style={styles.text}>{title}</Text>
+              
+                <Text style={styles.text}>{title}</Text>
+              
+              
+                <AntDesign 
+                  name="like2"
+                  size={20}
+                  color={'blue'}
+                  style={styles.icon}
+                  />
+               
+              </View>
+              <View>
+                <Image source={require('../../assets/missing.jpg')} style={styles.image}/>
+              </View>
             </View>
-            <View style={styles.column}>
-              <AntDesign 
-                name="like2"
-                size={20}
-                color={'blue'}
-                />
-            </View>
-          </View>
           </TouchableHighlight>
         )
       }
@@ -76,26 +85,28 @@ const styles = StyleSheet.create({
     backgroundColor: '#696969',
     paddingHorizontal: 10,
     padding:8,
-    margin:8,
-    borderRadius:10,
+    marginTop:8,
+    borderTopLeftRadius:10,
+    borderTopRightRadius:10,
     
   },
-  column: {
-    flex: 1,
-    alignItems: 'center',
-    textAlign: 'center',
-  },
+ 
   image: {
-    width: 80,
-    height: 80,
+    width: '100%',
+    height: 200,
     resizeMode: 'cover',
-    borderRadius:10,
+    borderBottomLeftRadius:10,
+    borderBottomRightRadius:10,
   },
   text: {
+
     fontSize: 11,
     color:'white',
-    textAlign: 'center',
+    textAlign: 'left',
   },
+  icon: {
+    alignSelf: 'flex-end',
+  }
 
 });
 
