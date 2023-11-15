@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Button, FlatList, Image,Dimensions, Modal, TouchableHighlight, ScrollView, useWindowDimensions,TouchableOpacity } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import HTML from 'react-native-render-html';
-//source={require('../../assets/missing.jpg')}
+
 
 
 const Detailgenerate = (modalVisible, setModalVisible, itemId, detailTitle, detailDate,detailImage,detailDimensions,detailArtist,detailDesc, imageVisible,setImageVisible) => {
@@ -90,25 +90,56 @@ const Detailgenerate = (modalVisible, setModalVisible, itemId, detailTitle, deta
     } else {
       return (
         <View style={styles.modal}>
-          <Modal
-          transparent={true}
-          visible={modalVisible}
-          animationType='slide'
-          onRequestClose={()=> {
-            setModalVisible(!modalVisible);
-          }}
-          >
-            <View style={styles.modaldata}>
-            <Image source={require('../../assets/missing.jpg')} style={styles.image}/>
-            <Text>{detailTitle}</Text>
-            <Text>{detailArtist}</Text>
-            <Text>{detailDate}</Text>
-            <Text>{detailDimensions}</Text>
-            <Button title='Back' onPress={()=> setModalVisible(!modalVisible)} style={styles.backButton}/>
+        <Modal
+        transparent={true}
+        visible={modalVisible}
+        animationType='slide'
+        onRequestClose={()=> {
+          setModalVisible(false);
+        }}
+        >
+          <View style={styles.modaldata}>
+            
+           
+         
+            
+              <Image
+                source={require('../../assets/missing.jpg')}
+                style={styles.image}
+              />
+            
+            
+           
+        
+          
+          <Text style={styles.title}>{detailTitle}</Text>
+          <View style={styles.row}>
+            <Text style={styles.labelText}>Author</Text>
+            <Text style={styles.detailText}>{detailArtist}</Text>
+          </View>
+          <View style={styles.row}>
+            <Text style={styles.labelText} >Date</Text>
+            
+            <Text style={styles.detailText}>{detailDate}</Text>
+            
+          </View>
+          <View style={styles.row}>
+            <Text style={styles.labelText}>Dimensions</Text>
+            <ScrollView style={styles.scrollContain} showsVerticalScrollIndicator={false}>
+              <Text style={styles.scrollText}>{detailDimensions}</Text>
+            </ScrollView>
+          </View>
+          {renderDescription()}
+          <TouchableOpacity onPress={()=> setModalVisible(false) } style={styles.returnField}>
+            <View style={styles.buttonView}>
+              <Text style={styles.returnButton}>Return</Text>
             </View>
-          </Modal>
-        </View>
-        )
+          </TouchableOpacity>
+          </View>
+        </Modal>
+      </View>
+      )
+        
     }
 }
   return Detail

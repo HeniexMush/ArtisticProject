@@ -18,17 +18,17 @@ const Explore = () => {
   const [detailArtist, setDetailArtist] = useState([]);
   const [detailDesc, setDetailDesc] = useState([]);
   const [imageVisible, setImageVisible] = useState(false);
-  const fetchData = FetchApiData(setApiData, setCurrentPage, setIsLoading, setIsEndListReached);
+  const fetchData = FetchApiData(setApiData, setCurrentPage, currentPage, setIsLoading, setIsEndListReached);
   const renderItem = ListItem(modalVisible, setModalVisible, setItemId, setDetailTitle,setDetailDate,setDetailImage,setDetailDimensions,setDetailArtist,setDetailDesc);
   const Detail = Detailgenerate(modalVisible, setModalVisible, itemId, detailTitle,detailDate,detailImage,detailDimensions,detailArtist,detailDesc, imageVisible,setImageVisible);
   
   useEffect(() => {
-    fetchData(currentPage);
+    fetchData(setApiData, setCurrentPage, currentPage, setIsLoading, setIsEndListReached);
   }, []);
   const addToList = () => {
     if (!isEndListReached && !isLoading) {
     setIsEndListReached(true);
-    fetchData(currentPage);
+    fetchData(setApiData, setCurrentPage, currentPage, setIsLoading, setIsEndListReached);
     }
   }
   const imageUrls = [
