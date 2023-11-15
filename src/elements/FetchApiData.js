@@ -5,7 +5,7 @@ const FetchApiData = (setApiData, setCurrentPage, setIsLoading, setIsEndReached)
     const fetchData = async (currentPage) => {
         try {
             setIsLoading(true);
-            const response = await fetch(`https://api.artic.edu/api/v1/artworks?page=${currentPage}&limit=15&fields=title,id,image_id,date_display,dimensions,artist_title`);
+            const response = await fetch(`https://api.artic.edu/api/v1/artworks?page=${currentPage}&limit=15&fields=title,id,image_id,date_start,date_end,dimensions,artist_title,description`);
             const data = await response.json();
 
             setApiData((prevData) => [...prevData, ...data.data]);

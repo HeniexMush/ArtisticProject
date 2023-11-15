@@ -1,16 +1,38 @@
 import { Feather } from '@expo/vector-icons';
 import { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Button, FlatList, Image, Modal, TouchableHighlight, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, Button, FlatList, Image,Dimensions, Modal, TouchableHighlight, ScrollView, useWindowDimensions,TouchableOpacity } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
+import HTML from 'react-native-render-html';
 //source={require('../../assets/missing.jpg')}
 
 
-const Detailgenerate = (modalVisible, setModalVisible, itemId, detailTitle, detailDate,detailImage,detailDimensions,detailArtist) => {
+const Detailgenerate = (modalVisible, setModalVisible, itemId, detailTitle, detailDate,detailImage,detailDimensions,detailArtist,detailDesc, imageVisible,setImageVisible) => {
   
+  const imageUrls = [
+    {
+      url: 'https://www.artic.edu/iiif/2/' + detailImage + '/full/843,/0/default.jpg',
+    },
+  ];
+ 
   const Detail = () => {
-    if (!modalVisible) {
-      return null;
-    }
+    
+  
+    const renderDescription = () => {
+      if (detailDesc) {
+        return (
+          <ScrollView style={styles.scrollContainDesc} showsVerticalScrollIndicator={false}>
+          <HTML source={{ html: detailDesc }} contentWidth={300} 
+          tagsStyles={{ p: { textAlign: 'center' }}} />
+          </ScrollView>
+        );
+      } else {
+        return (
+
+          <Text style={styles.notfound}>No description available</Text>
+        );
+      }
+    };
+  
     if (detailImage !=null) {
       return (
       <View style={styles.modal}>
@@ -19,13 +41,25 @@ const Detailgenerate = (modalVisible, setModalVisible, itemId, detailTitle, deta
         visible={modalVisible}
         animationType='slide'
         onRequestClose={()=> {
-          setModalVisible(!modalVisible);
+          setModalVisible(false);
         }}
         >
           <View style={styles.modaldata}>
-          <Image source={{
-            uri:  'https://www.artic.edu/iiif/2/'+detailImage+'/full/843,/0/default.jpg' 
-          }} style={styles.image}/>
+            
+           
+         
+            <TouchableOpacity onPress={() =>{setImageVisible(true)}} style={styles.buttonView}>
+              <Image
+                source={{
+                  uri: 'https://www.artic.edu/iiif/2/' + detailImage + '/full/843,/0/default.jpg',
+                }}
+                style={styles.image}
+              />
+            </TouchableOpacity>
+            
+           
+        
+          
           <Text style={styles.title}>{detailTitle}</Text>
           <View style={styles.row}>
             <Text style={styles.labelText}>Author</Text>
@@ -33,9 +67,9 @@ const Detailgenerate = (modalVisible, setModalVisible, itemId, detailTitle, deta
           </View>
           <View style={styles.row}>
             <Text style={styles.labelText} >Date</Text>
-            <ScrollView style={styles.scrollContain} showsVerticalScrollIndicator={false}>
-              <Text style={styles.scrollText}>{detailDate}</Text>
-            </ScrollView>
+            
+            <Text style={styles.detailText}>{detailDate}</Text>
+            
           </View>
           <View style={styles.row}>
             <Text style={styles.labelText}>Dimensions</Text>
@@ -43,7 +77,12 @@ const Detailgenerate = (modalVisible, setModalVisible, itemId, detailTitle, deta
               <Text style={styles.scrollText}>{detailDimensions}</Text>
             </ScrollView>
           </View>
-          <Button title='Back' onPress={()=> setModalVisible(!modalVisible)} style={styles.backButton}/>
+          {renderDescription()}
+          <TouchableOpacity onPress={()=> setModalVisible(false) } style={styles.returnField}>
+            <View style={styles.buttonView}>
+              <Text style={styles.returnButton}>Return</Text>
+            </View>
+          </TouchableOpacity>
           </View>
         </Modal>
       </View>
@@ -79,12 +118,11 @@ const styles = StyleSheet.create({
     modal: {
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 100,
+        marginTop: 30,
       },
     modaldata: {
         margin: 20,
         marginTop:40,
-        marginBottom:40,
         backgroundColor: 'white',
         borderRadius: 20,
         padding: 35,
@@ -94,20 +132,13 @@ const styles = StyleSheet.create({
           width: 0,
           height: 2,
         },
-      },
-    image: {
-        width: 200,
-        height: 350,
-        resizeMode: 'cover',
-        borderRadius:10,
-        borderWidth: 1,
-        borderColor: 'black', 
-        borderRadius: 5,
-        shadowColor: 'black',
-        shadowRadius: 2,
-
-
     },
+    image: {
+          width:'100%',
+          height:300,
+          resizeMode: 'cover',
+          borderRadius:10,
+      },
     row: {
       flexDirection: 'row',
       justifyContent: 'flex-start',
@@ -143,29 +174,67 @@ const styles = StyleSheet.create({
       fontSize:24,
       fontStyle: 'italic',
     },
-    backButton: {
-      width: '100%',
-      textAlign: 'center',
-      color: 'white',
-      fontWeight: 'bold',
-      paddingVertical: 12, 
-    },
     scrollContain: {
+      flex:2,
       textAlign: 'right',
-      flex: 2,
       borderWidth: 1,
       borderColor: 'black',
       borderRadius: 5,
       paddingBottom: 10,
       maxHeight: 50,
+      minHeight:30,
+    },
+    scrollContainDesc: {
+      borderWidth: 1,
+      borderColor: 'black',
+      borderRadius: 5,
+      paddingBottom: 10,
+      maxHeight: 60,
+      minHeight:20,
     },
     scrollText: {
-      flex: 1,
+      flex:2,
       paddingBottom: 10,
       width: '100%',
       textAlign: 'right',
     },
-
+    desc: {
+      flex:2,
+      paddingBottom: 5,
+      width: '100%',
+      textAlign: 'center',
+    },
+    notfound: {
+      width: '100%',
+      textAlign: 'center',
+      borderWidth: 1,
+      borderColor: 'black',
+      borderRadius: 5,
+    },
+    returnButton: {
+      marginTop: 10,
+      borderWidth: 1,
+      borderColor: 'black',
+      borderTopLeftRadius: 5,
+      borderTopRightRadius: 5,
+      color: 'black',
+      backgroundColor:'white',
+      fontSize: 19,
+      position: 'absolute',
+      flex:1,
+      alignSelf:'center',
+      width:'100%',
+      textAlign:'center',
+    },
+    returnField: {
+      flex:1,
+      alignSelf:'center',
+      marginBottom:5,
+    },
+    buttonView: {
+      width:'100%',
+    },
+ 
 })
 
 export default Detailgenerate

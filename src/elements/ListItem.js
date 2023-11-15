@@ -4,11 +4,11 @@ import { StyleSheet, Text, View, Button, FlatList, Image, Modal, TouchableHighli
 import { AntDesign } from '@expo/vector-icons';
 
 
-const ListItem = (modalVisible, setModalVisible, setItemId, setDetailTitle,setDetailDate,setDetailImage,setDetailDimensions,setDetailArtist) => {
+const ListItem = (modalVisible, setModalVisible, setItemId, setDetailTitle,setDetailDate,setDetailImage,setDetailDimensions,setDetailArtist,setDetailDesc) => {
 
 
  
-    const Item = ({ title, id, image_id, dimensions,artist_title,date_display}) => {
+    const Item = ({ title, id, image_id, dimensions,artist_title,date_start,date_end,description}) => {
 
       const imageId = image_id
       const artworkImageUrl = 'https://www.artic.edu/iiif/2/'+imageId+'/full/843,/0/default.jpg';
@@ -17,7 +17,7 @@ const ListItem = (modalVisible, setModalVisible, setItemId, setDetailTitle,setDe
 
       if (imageId !=null) {
         return (
-          <TouchableHighlight onPress={()=> {setModalVisible(!modalVisible)}}  onPressIn={()=> {{setItemId(id);setDetailTitle(title);setDetailDate(date_display);setDetailImage(image_id);setDetailDimensions(dimensions);setDetailArtist(artist_title)}}} underlayColor='lightgray'>
+          <TouchableHighlight onPress={()=> {setModalVisible(!modalVisible)}}  onPressIn={()=> {{setItemId(id);setDetailTitle(title);setDetailDate(date_start+'-'+date_end);setDetailImage(image_id);setDetailDimensions(dimensions);setDetailArtist(artist_title); setDetailDesc(description)}}} underlayColor='lightgray'>
             <View>
               <View style={styles.listelement}>
               
@@ -43,7 +43,7 @@ const ListItem = (modalVisible, setModalVisible, setItemId, setDetailTitle,setDe
         )
       } else {
         return (
-          <TouchableHighlight onPress={()=> {setModalVisible(!modalVisible)}}  onPressIn={()=> {{setItemId(id);setDetailTitle(title);setDetailDate(date_display);setDetailImage(null);setDetailDimensions(dimensions);setDetailArtist(artist_title)}}} underlayColor='lightgray'>
+          <TouchableHighlight onPress={()=> {setModalVisible(!modalVisible)}}  onPressIn={()=> {{setItemId(id);setDetailTitle(title);setDetailDate(date_start+'-'+date_end);setDetailImage(null);setDetailDimensions(dimensions);setDetailArtist(artist_title)}}} underlayColor='lightgray'>
             <View>
               <View style={styles.listelement}>
               
@@ -71,7 +71,7 @@ const ListItem = (modalVisible, setModalVisible, setItemId, setDetailTitle,setDe
       }
     
     const renderItem = ({ item }) => (
-        <Item title={item.title} id={item.id} image_id={item.image_id} dimensions={item.dimensions} artist_title={item.artist_title} date_display={item.date_display}/>
+        <Item title={item.title} id={item.id} image_id={item.image_id} dimensions={item.dimensions} artist_title={item.artist_title} date_start={item.date_start} date_end={item.date_end} description={item.description}/>
     )
     
     return renderItem

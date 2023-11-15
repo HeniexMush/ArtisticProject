@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
 import ListItem from '../elements/ListItem';
 import FetchApiData from '../elements/FetchApiData';
 import Detailgenerate from '../elements/Detailgenerate';
+import ZoomableImage from '../elements/ZoomableImage';
 const Explore = () => {
   const [apiData, setApiData] = useState([]);
   const [itemId, setItemId] = useState([]);
@@ -15,9 +16,11 @@ const Explore = () => {
   const [detailImage, setDetailImage] = useState([]);
   const [detailDimensions, setDetailDimensions] = useState([]);
   const [detailArtist, setDetailArtist] = useState([]);
+  const [detailDesc, setDetailDesc] = useState([]);
+  const [imageVisible, setImageVisible] = useState(false);
   const fetchData = FetchApiData(setApiData, setCurrentPage, setIsLoading, setIsEndListReached);
-  const renderItem = ListItem(modalVisible, setModalVisible, setItemId, setDetailTitle,setDetailDate,setDetailImage,setDetailDimensions,setDetailArtist);
-  const Detail = Detailgenerate(modalVisible, setModalVisible, itemId, detailTitle,detailDate,detailImage,detailDimensions,detailArtist);
+  const renderItem = ListItem(modalVisible, setModalVisible, setItemId, setDetailTitle,setDetailDate,setDetailImage,setDetailDimensions,setDetailArtist,setDetailDesc);
+  const Detail = Detailgenerate(modalVisible, setModalVisible, itemId, detailTitle,detailDate,detailImage,detailDimensions,detailArtist,detailDesc, imageVisible,setImageVisible);
   
   useEffect(() => {
     fetchData(currentPage);
@@ -28,6 +31,11 @@ const Explore = () => {
     fetchData(currentPage);
     }
   }
+  const imageUrls = [
+    {
+      url: 'https://www.artic.edu/iiif/2/' + detailImage + '/full/843,/0/default.jpg',
+    },
+  ];
   return (
     <View style={styles.background}>
       <FlatList 
@@ -39,6 +47,7 @@ const Explore = () => {
         
       />
       <Detail />
+      <ZoomableImage visible={imageVisible} title={detailTitle} imageUrls={imageUrls} onClose={() => {setImageVisible(false)}} />
     </View>
   );
 }
