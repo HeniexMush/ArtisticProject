@@ -10,12 +10,12 @@ const FetchApiData = (setApiData, setCurrentPage, currentPage, setIsLoading, set
 
             setApiData((prevData) => [...prevData, ...data.data]);
             setCurrentPage(currentPage + 1);
+            setIsEndListReached(false);
             console.log(data.data);
 
         } catch (error) {
             console.error("Error while trying to acces the api data:", error);
         } finally {
-            setIsEndListReached(false);
             setIsLoading(false);
         }
     }

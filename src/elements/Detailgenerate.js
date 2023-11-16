@@ -6,14 +6,9 @@ import HTML from 'react-native-render-html';
 
 
 
-const Detailgenerate = (modalVisible, setModalVisible, itemId, detailTitle, detailDate,detailImage,detailDimensions,detailArtist,detailDesc, imageVisible,setImageVisible) => {
+const Detailgenerate = (modalVisible, setModalVisible, itemId, detailTitle, detailDate,detailImage,detailDimensions,detailArtist,detailDesc,setImageVisible) => {
   
-  const imageUrls = [
-    {
-      url: 'https://www.artic.edu/iiif/2/' + detailImage + '/full/843,/0/default.jpg',
-    },
-  ];
- 
+
   const Detail = () => {
     
   
@@ -32,6 +27,19 @@ const Detailgenerate = (modalVisible, setModalVisible, itemId, detailTitle, deta
         );
       }
     };
+    const renderArtist = () => {
+      if(detailArtist != null) {
+        return (
+          <TouchableOpacity>
+            <Text style={styles.artistText}>{detailArtist}</Text>
+          </TouchableOpacity>
+        )
+      } else {
+        return (
+          <Text style={styles.detailText}>Unknown</Text>
+        )
+      }
+    }
   
     if (detailImage !=null) {
       return (
@@ -63,7 +71,7 @@ const Detailgenerate = (modalVisible, setModalVisible, itemId, detailTitle, deta
           <Text style={styles.title}>{detailTitle}</Text>
           <View style={styles.row}>
             <Text style={styles.labelText}>Author</Text>
-            <Text style={styles.detailText}>{detailArtist}</Text>
+            {renderArtist()}
           </View>
           <View style={styles.row}>
             <Text style={styles.labelText} >Date</Text>
@@ -115,7 +123,7 @@ const Detailgenerate = (modalVisible, setModalVisible, itemId, detailTitle, deta
           <Text style={styles.title}>{detailTitle}</Text>
           <View style={styles.row}>
             <Text style={styles.labelText}>Author</Text>
-            <Text style={styles.detailText}>{detailArtist}</Text>
+            {renderArtist()}
           </View>
           <View style={styles.row}>
             <Text style={styles.labelText} >Date</Text>
@@ -264,6 +272,18 @@ const styles = StyleSheet.create({
     },
     buttonView: {
       width:'100%',
+    },
+    artistText: {
+      flex:1,
+      color: 'black',
+      borderWidth: 1,
+      borderColor: 'black', 
+      borderRadius: 5, 
+      padding: 10,
+      textAlign:'right',
+      overflow: 'hidden',
+      textDecorationLine:'underline',
+      
     },
  
 })
