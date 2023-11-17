@@ -4,14 +4,36 @@ import { StyleSheet, Text, View, Button, FlatList, Image,Dimensions, Modal, Touc
 import { AntDesign } from '@expo/vector-icons';
 import HTML from 'react-native-render-html';
 import FetchArtist from './FetchArtist';
+import LoadLikes from './LoadLikes';
+import LikeArt from './LikeArt';
 
 
 
 const Detailgenerate = (modalVisible, setModalVisible, itemId, detailTitle, detailDate,detailImage,detailDimensions,detailArtist,detailDesc,setImageVisible, setArtistData, setArtistVisible) => {
   
+
  
   const Detail = ({artistId}) => {
+
+    const [isLiked, setIsLiked] = useState(false);
+
+    useEffect(() => {
+      LoadLikes(itemId,setIsLiked)
+    }, []);
     
+    const renderLike = () => {
+      return (
+        <TouchableHighlight onPress={() => LikeArt(itemId,setIsLiked)}>
+          <AntDesign 
+            name={isLiked ? 'like1' : 'like2'}
+            size={20}
+            color={isLiked ? 'blue': 'lightgray'}
+            style={styles.icon}
+            />
+        </TouchableHighlight>
+      )
+    }
+
   
     const renderDescription = () => {
       if (detailDesc) {
@@ -74,7 +96,9 @@ const Detailgenerate = (modalVisible, setModalVisible, itemId, detailTitle, deta
                 style={styles.image}
               />
             </TouchableOpacity>
-            
+            <View style={styles.likeContainer}>
+              {renderLike()}
+            </View>
            
         
           
@@ -294,6 +318,9 @@ const styles = StyleSheet.create({
       overflow: 'hidden',
       textDecorationLine:'underline',
       
+    },
+    likeContainer: {
+      marginLeft: 'auto',
     },
  
 })

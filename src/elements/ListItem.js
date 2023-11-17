@@ -1,15 +1,21 @@
 import { Feather } from '@expo/vector-icons';
 import { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Button, FlatList, Image, Modal, TouchableHighlight } from 'react-native';
+import { StyleSheet, Text, View, Button, FlatList, Image, Modal, TouchableHighlight, AsyncStorage } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
+import LoadLikes from './LoadLikes';
+import LikeArt from './LikeArt';
+
 
 
 const ListItem = (modalVisible, setModalVisible, setItemId, setDetailTitle,setDetailDate,setDetailImage,setDetailDimensions,setDetailArtist,setDetailDesc, setArtistId) => {
-
-
+    
  
     const Item = ({ title, id, image_id, dimensions,artist_title,date_start,date_end,description, artist_id}) => {
-
+      
+      useEffect(() => {
+        LoadLikes(id, setIsLiked);
+      }, []);
+      
       const imageId = image_id
       const artworkImageUrl = 'https://www.artic.edu/iiif/2/'+imageId+'/full/843,/0/default.jpg';
       
@@ -27,6 +33,7 @@ const ListItem = (modalVisible, setModalVisible, setItemId, setDetailTitle,setDe
         }
       }
       
+      const [isLiked, setIsLiked] = useState(false);
 
       if (imageId !=null) {
         return (
@@ -38,15 +45,14 @@ const ListItem = (modalVisible, setModalVisible, setItemId, setDetailTitle,setDe
               
                 <Text style={styles.text}>{title}</Text>
               
-              
-                <AntDesign 
-                  name="like2"
-                  size={20}
-                  color={'blue'}
-
-                  style={styles.icon}
-                  />
-              
+                <TouchableHighlight onPress={() => LikeArt(id,setIsLiked)}>
+                  <AntDesign 
+                    name={isLiked ? 'like1' : 'like2'}
+                    size={20}
+                    color={isLiked ? 'blue': 'white'}
+                    style={styles.icon}
+                    />
+                </TouchableHighlight>
               </View>
               <View>
                 <Image source={{uri: artworkImageUrl}} style={styles.image}/>

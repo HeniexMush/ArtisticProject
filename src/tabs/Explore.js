@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import ListItem from '../elements/ListItem';
 import FetchApiData from '../elements/FetchApiData';
 import Detailgenerate from '../elements/Detailgenerate';
