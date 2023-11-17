@@ -3,18 +3,14 @@ import { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Button, FlatList, Image,Dimensions, Modal, TouchableHighlight, ScrollView, useWindowDimensions,TouchableOpacity } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import HTML from 'react-native-render-html';
+import FetchArtist from './FetchArtist';
 
 
 
-const Detailgenerate = (modalVisible, setModalVisible, itemId, detailTitle, detailDate,detailImage,detailDimensions,detailArtist,detailDesc, imageVisible,setImageVisible) => {
+const Detailgenerate = (modalVisible, setModalVisible, itemId, detailTitle, detailDate,detailImage,detailDimensions,detailArtist,detailDesc,setImageVisible, setArtistData, setArtistVisible) => {
   
-  const imageUrls = [
-    {
-      url: 'https://www.artic.edu/iiif/2/' + detailImage + '/full/843,/0/default.jpg',
-    },
-  ];
  
-  const Detail = () => {
+  const Detail = ({artistId}) => {
     
   
     const renderDescription = () => {
@@ -32,6 +28,28 @@ const Detailgenerate = (modalVisible, setModalVisible, itemId, detailTitle, deta
         );
       }
     };
+    const fetchArtist = async () => {
+      try {
+        const artistData = await FetchArtist(artistId);
+        setArtistData(artistData);
+        setArtistVisible(true);
+      } catch (error) {
+        console.error("Error fetching artist data:", error);
+      }
+    };
+    const renderArtist = () => {
+      if(detailArtist != null) {
+        return (
+          <TouchableOpacity onPressIn={() => fetchArtist()}>
+            <Text style={styles.artistText}>{detailArtist}</Text>
+          </TouchableOpacity>
+        )
+      } else {
+        return (
+          <Text style={styles.detailText}>Unknown</Text>
+        )
+      }
+    }
   
     if (detailImage !=null) {
       return (
@@ -63,7 +81,7 @@ const Detailgenerate = (modalVisible, setModalVisible, itemId, detailTitle, deta
           <Text style={styles.title}>{detailTitle}</Text>
           <View style={styles.row}>
             <Text style={styles.labelText}>Author</Text>
-            <Text style={styles.detailText}>{detailArtist}</Text>
+            {renderArtist()}
           </View>
           <View style={styles.row}>
             <Text style={styles.labelText} >Date</Text>
@@ -115,7 +133,7 @@ const Detailgenerate = (modalVisible, setModalVisible, itemId, detailTitle, deta
           <Text style={styles.title}>{detailTitle}</Text>
           <View style={styles.row}>
             <Text style={styles.labelText}>Author</Text>
-            <Text style={styles.detailText}>{detailArtist}</Text>
+            {renderArtist()}
           </View>
           <View style={styles.row}>
             <Text style={styles.labelText} >Date</Text>
@@ -264,6 +282,18 @@ const styles = StyleSheet.create({
     },
     buttonView: {
       width:'100%',
+    },
+    artistText: {
+      flex:1,
+      color: 'black',
+      borderWidth: 1,
+      borderColor: 'black', 
+      borderRadius: 5, 
+      padding: 10,
+      textAlign:'right',
+      overflow: 'hidden',
+      textDecorationLine:'underline',
+      
     },
  
 })
