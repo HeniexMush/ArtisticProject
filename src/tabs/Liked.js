@@ -24,25 +24,6 @@ const Liked = () => {
   const [artistVisible, setArtistVisible] = useState(false);
   const renderItem = ListItem(modalVisible, setModalVisible, setItemId, setDetailTitle,setDetailDate,setDetailImage,setDetailDimensions,setDetailArtist,setDetailDesc,setArtistId);
   const Detail = Detailgenerate(modalVisible, setModalVisible, itemId, detailTitle,detailDate,detailImage,detailDimensions,detailArtist,detailDesc,setImageVisible, setArtistData, setArtistVisible);
-  /*
-  useEffect(() => {
-    const logAsyncStorage = async () => {
-      try {
-        const keys = await AsyncStorage.getAllKeys();
-        const items = await AsyncStorage.multiGet(keys);
-        const storageData = items.reduce((acc, [key, value]) => {
-          acc[key] = value;
-          return acc;
-        }, {});
-    
-        console.log('AsyncStorage Data:', storageData);
-      } catch (error) {
-        console.error('Error logging AsyncStorage data:', error);
-      }
-    };
-    logAsyncStorage();
-  }, []);
-  */
 
   
    const fetchLikedArtIds = async () => {
@@ -119,6 +100,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#353535',
     position: 'relative',
+    paddingBottom: 0,
+    marginBottom: 0,
   },
   reloadLikesButton: {
     position: 'absolute',
@@ -131,7 +114,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'lightgray',
     borderWidth: 1,
     borderColor: 'black',
-    borderRadius: 5,
+    borderTopleftRadius: 5,
+    borderToprightRadius: 5,
+    borderBottomWidth:0,
   },
   reloadLikesText: {
     padding: 10,
