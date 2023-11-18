@@ -71,12 +71,14 @@ const ListItem = (modalVisible, setModalVisible, setItemId, setDetailTitle,setDe
                 <Text style={styles.text}>{title}</Text>
               
               
-                <AntDesign 
-                  name="like2"
-                  size={20}
-                  color={'blue'}
-                  style={styles.icon}
-                  />
+                <TouchableHighlight onPress={() => LikeArt(id,setIsLiked)}>
+                  <AntDesign 
+                    name={isLiked ? 'like1' : 'like2'}
+                    size={20}
+                    color={isLiked ? 'blue': 'white'}
+                    style={styles.icon}
+                    />
+                </TouchableHighlight>
                
               </View>
               <View>

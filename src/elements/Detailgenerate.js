@@ -149,7 +149,9 @@ const Detailgenerate = (modalVisible, setModalVisible, itemId, detailTitle, deta
                 source={require('../../assets/missing.jpg')}
                 style={styles.image}
               />
-            
+              <View style={styles.likeContainer}>
+              {renderLike()}
+              </View>
             
            
         

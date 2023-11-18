@@ -1,53 +1,145 @@
-import { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
+import React from 'react';
+import { useState, useEffect, useLayoutEffect } from 'react';
+import { StyleSheet, Text, View, Button, FlatList,TouchableHighlight, ActivityIndicator } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import ListItem from '../elements/ListItem';
-import FetchApiData from '../elements/FetchApiData';
-
+import Detailgenerate from '../elements/Detailgenerate';
+import ZoomableImage from '../elements/ZoomableImage';
+import ArtistModal from '../elements/AuthorPage';
+import FetchLiked from '../elements/FetchLiked';
 const Liked = () => {
+  const [artisData, setArtistData] = useState([]);
+  const [itemId, setItemId] = useState([]);
+  const [likedArtIds, setLikedArtIds] = useState([]);
+  const [likedArtworks, setLikedArtworks] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [detailTitle, setDetailTitle] = useState([]);
+  const [detailDate, setDetailDate] = useState([]);
+  const [detailImage, setDetailImage] = useState([]);
+  const [detailDimensions, setDetailDimensions] = useState([]);
+  const [detailArtist, setDetailArtist] = useState([]);
+  const [artistId, setArtistId] = useState([]);
+  const [detailDesc, setDetailDesc] = useState([]);
+  const [imageVisible, setImageVisible] = useState(false);
+  const [artistVisible, setArtistVisible] = useState(false);
+  const renderItem = ListItem(modalVisible, setModalVisible, setItemId, setDetailTitle,setDetailDate,setDetailImage,setDetailDimensions,setDetailArtist,setDetailDesc,setArtistId);
+  const Detail = Detailgenerate(modalVisible, setModalVisible, itemId, detailTitle,detailDate,detailImage,detailDimensions,detailArtist,detailDesc,setImageVisible, setArtistData, setArtistVisible);
+  /*
+  useEffect(() => {
+    const logAsyncStorage = async () => {
+      try {
+        const keys = await AsyncStorage.getAllKeys();
+        const items = await AsyncStorage.multiGet(keys);
+        const storageData = items.reduce((acc, [key, value]) => {
+          acc[key] = value;
+          return acc;
+        }, {});
+    
+        console.log('AsyncStorage Data:', storageData);
+      } catch (error) {
+        console.error('Error logging AsyncStorage data:', error);
+      }
+    };
+    logAsyncStorage();
+  }, []);
+  */
 
-  const [apiData, setApiData] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isEndListReached, setIsEndListReached] = useState(false);
+  
+   const fetchLikedArtIds = async () => {
+    
+    try {
+      
+      const likedArt = await AsyncStorage.getItem('likedArt');
+      if (likedArt !== null) {
+        setLikedArtIds(JSON.parse(likedArt));
+      }
+    } catch (error) {
+      console.error('Error fetching liked art IDs:', error);
+    }
+    
+  };
 
-  const fetchData = FetchApiData(setApiData, setCurrentPage, setIsLoading, setIsEndListReached);
-  const renderItem = ListItem();
+  
+  const fetchLikedArtData = async () => {
+    const likedArtList = [];
+    const ids = Object.keys(likedArtIds);
+    
+    for (const id of ids) {
+      try {
+        const artworkData = await FetchLiked(id);
+        if (artworkData) {
+          likedArtList.push(artworkData);
+        }
+      } catch (error) {
+        console.error('Error fetching artwork data:', error);
+      } 
+    
+    setLikedArtworks(likedArtList);
+      
+    }
+   };
 
   useEffect(() => {
-    fetchData(currentPage);
+    fetchLikedArtIds();
   }, []);
 
-
-
-  const addToList = () => {
-    if (!isEndListReached && !isLoading) {
-    setIsEndListReached(true);
-    fetchData(currentPage);
+  useEffect(() => {
+    if (Object.keys(likedArtIds).length > 0) {
+      fetchLikedArtData(); 
     }
-  }
+  }, [likedArtIds]);
 
+  
+  
+  const imageUrls = [
+    {
+      url: 'https://www.artic.edu/iiif/2/' + detailImage + '/full/843,/0/default.jpg',
+    },
+  ];
   return (
-    <View style={styles.container}>
+    <View style={styles.background}>
+  
       <FlatList 
-        data={apiData}
+        data={likedArtworks}
         renderItem={renderItem}
         keyExtractor={(item) => item.id.toString()}
-        onEndReached={addToList}
-        onEndReachedThreshold={0.2}
-
+        //onEndReached={() =>{fetchLikedArtIds();fetchLikedArtData()}}       
       />
+      <Detail artistId={artistId}  />
+      <ZoomableImage visible={imageVisible} title={detailTitle} imageUrls={imageUrls} onClose={() => {setImageVisible(false)}} />
+      <ArtistModal artistData={artisData} artistVisible={artistVisible} setArtistVisible={setArtistVisible}/>
+      <TouchableHighlight onPress={() => {fetchLikedArtIds(); fetchLikedArtData()}} style={styles.reloadLikesButton}>
+        <Text style={styles.reloadLikesText}>Reload Likes</Text>
+      </TouchableHighlight>
     </View>
   );
 }
-
 const styles = StyleSheet.create({
-  container: {
+  background: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: '#353535',
+    position: 'relative',
   },
+  reloadLikesButton: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    alignItems: 'center',
+    width: '100%',
+    opacity: 0.6,
+    backgroundColor: 'lightgray',
+    borderWidth: 1,
+    borderColor: 'black',
+    borderRadius: 5,
+  },
+  reloadLikesText: {
+    padding: 10,
+    color: 'black',
+    fontSize: 19,
+    fontStyle: 'italic',
+  },
+
 });
-
-
 export default Liked;
+
