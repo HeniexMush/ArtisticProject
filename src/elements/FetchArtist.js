@@ -1,3 +1,4 @@
+//fetch data about an artist
 const FetchArtist = async (artistId) => {
   try {
     const response = await fetch(`https://api.artic.edu/api/v1/artists/${artistId}?fields=title,description,birth_date,death_date`);

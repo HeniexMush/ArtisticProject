@@ -5,6 +5,7 @@ import HTML from 'react-native-render-html';
 const ArtistModal = ({ artistData, artistVisible, setArtistVisible }) => {
     
     const renderDescription = () => {
+      //render description or replace it with placeholder text
         if (artistData.description != null) {
             return (
                 <ScrollView showsVerticalScrollIndicator={false} style={styles.description}>
@@ -18,7 +19,7 @@ const ArtistModal = ({ artistData, artistVisible, setArtistVisible }) => {
               );
         }
     }
-
+    //format date
     const renderDate = () => {
         if (artistData.birth_date == null && artistData.death_date == null) {
             return (

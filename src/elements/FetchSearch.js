@@ -1,3 +1,4 @@
+//fetch data with known query and page
 const FetchLiked = async (query,setSearchData,currentPage, setCurrentPage,setIsEndListReached,setIsLoading) => {
     
     try {

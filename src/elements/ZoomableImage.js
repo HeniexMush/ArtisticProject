@@ -2,6 +2,8 @@ import React from 'react';
 import { Modal, Text, StyleSheet, View } from 'react-native';
 import ImageViewer from 'react-native-image-zoom-viewer';
 
+
+//new modal with full sized image view
 const ZoomableImage = ({ imageUrls, visible, onClose, title }) => {
   return (
     <Modal visible={visible}>

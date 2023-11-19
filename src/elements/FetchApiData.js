@@ -1,5 +1,4 @@
-
-
+//fetch data and add it to the data list
 const FetchApiData = (setApiData, setCurrentPage, currentPage, setIsLoading, setIsEndListReached) => {
     
     const fetchData = async () => {

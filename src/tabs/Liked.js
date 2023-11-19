@@ -27,7 +27,8 @@ const Liked = () => {
   const renderItem = ListItem(modalVisible, setModalVisible, setItemId, setDetailTitle,setDetailDate,setDetailImage,setDetailDimensions,setDetailArtist,setDetailDesc,setArtistId);
   const Detail = Detailgenerate(modalVisible, setModalVisible, itemId, detailTitle,detailDate,detailImage,detailDimensions,detailArtist,detailDesc,setImageVisible, setArtistData, setArtistVisible);
 
-
+    //disable the reload likes button for a some time to prevent to many API requests, this probably should disable the button for the duration of fetching data,
+    //but i ran into some problems while coding it so this is a temporary solution.
      const disableButton = () => {
         setIsButtonDisabled(true);
         setTimeout(() => {
@@ -35,7 +36,7 @@ const Liked = () => {
         }, 7000);
      }
      
-     
+    //cover the list when it is not fully loaded
     const renderList =  () => {
       if (isLoading) {
         return (
@@ -52,7 +53,7 @@ const Liked = () => {
       }
 
     }
-  
+  //fetch all liked ids from async storage
    const fetchLikedArtIds = async () => {
     
     try {
@@ -67,7 +68,7 @@ const Liked = () => {
     
   };
 
-  
+  //fetch data for all ids in the list
   const fetchLikedArtData = async () => {
     const likedArtList = [];
     const ids = Object.keys(likedArtIds);
@@ -87,7 +88,8 @@ const Liked = () => {
     }
    };
 
-  useEffect(() => {
+  //load the liked data on first mount
+   useEffect(() => {
     fetchLikedArtIds();
   }, []);
 
@@ -104,6 +106,7 @@ const Liked = () => {
       url: 'https://www.artic.edu/iiif/2/' + detailImage + '/full/843,/0/default.jpg',
     },
   ];
+  //render liked list and a button that reloads it
   return (
     <View style={styles.background}>
       {renderList()}

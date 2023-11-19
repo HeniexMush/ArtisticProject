@@ -16,7 +16,7 @@ const Detailgenerate = (modalVisible, setModalVisible, itemId, detailTitle, deta
   const Detail = ({artistId}) => {
 
     const [isLiked, setIsLiked] = useState(false);
-
+    //check if item is liked on mount
     useEffect(() => {
       LoadLikes(itemId,setIsLiked)
     }, []);
@@ -34,7 +34,7 @@ const Detailgenerate = (modalVisible, setModalVisible, itemId, detailTitle, deta
       )
     }
 
-  
+  //format description or render placeholder text
     const renderDescription = () => {
       if (detailDesc) {
         return (
@@ -50,6 +50,7 @@ const Detailgenerate = (modalVisible, setModalVisible, itemId, detailTitle, deta
         );
       }
     };
+    //fetch data about artist and open artist page
     const fetchArtist = async () => {
       try {
         const artistData = await FetchArtist(artistId);

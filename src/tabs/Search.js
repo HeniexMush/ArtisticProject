@@ -26,6 +26,7 @@ const Search = () => {
   const [detailDesc, setDetailDesc] = useState([]);
   const [imageVisible, setImageVisible] = useState(false);
   const [artistVisible, setArtistVisible] = useState(false);
+  const [isButtonDisabled,setIsButtonDisabled] = useState(false);
   const [placeholderTxt, setPlaceholderTxt] = useState("Click the search icon to display results!");
   const renderItem = ListItem(modalVisible, setModalVisible, setItemId, setDetailTitle,setDetailDate,setDetailImage,setDetailDimensions,setDetailArtist,setDetailDesc,setArtistId);
   const Detail = Detailgenerate(modalVisible, setModalVisible, itemId, detailTitle,detailDate,detailImage,detailDimensions,detailArtist,detailDesc,setImageVisible, setArtistData, setArtistVisible);
@@ -36,6 +37,7 @@ const Search = () => {
       url: 'https://www.artic.edu/iiif/2/' + detailImage + '/full/843,/0/default.jpg',
     },
   ];
+  //empty the data list and fetch data with new query
   const handleSearch = () => {
     setSearchData([]);
     setCurrentPage(1);
@@ -44,7 +46,7 @@ const Search = () => {
     setPlaceholderTxt("No results for this query!");
     
   }
-
+  //add new data to list when end of the list is reached
   const addToList = () => {
     
     if (!isEndListReached && !isLoading) {
@@ -53,7 +55,14 @@ const Search = () => {
     
     }
   }
-
+  //disable button to prevent multiple Api requests, temporary fix
+  const disableButton = () => {
+    setIsButtonDisabled(true);
+    setTimeout(() => {
+      setIsButtonDisabled(false);
+    }, 7000);
+ }
+  //generate list or placeholder text
   const  generateList = () => {
       if (searchData.length > 0) {
         return (
@@ -86,7 +95,7 @@ const Search = () => {
             placeholder="Type here to search..."
             placeholderTextColor='white'
           />
-          <TouchableOpacity onPress={handleSearch}>
+          <TouchableOpacity onPress={() =>{handleSearch();disableButton()}} disabled={isButtonDisabled}>
             <FontAwesome name="search" size={30} color="white" />
           </TouchableOpacity>
         </View>

@@ -12,6 +12,7 @@ const ListItem = (modalVisible, setModalVisible, setItemId, setDetailTitle,setDe
  
     const Item = ({ title, id, image_id, dimensions,artist_title,date_start,date_end,description, artist_id}) => {
       
+      //check if list item is liked on mount, this is probably not the best solution, the likes keep flashing.
       useEffect(() => {
         LoadLikes(id, setIsLiked);
       }, []);
@@ -19,9 +20,9 @@ const ListItem = (modalVisible, setModalVisible, setItemId, setDetailTitle,setDe
       const imageId = image_id
       const artworkImageUrl = 'https://www.artic.edu/iiif/2/'+imageId+'/full/843,/0/default.jpg';
       
+      //format date
       const getDateRange = () => {
         
-      
         if (date_start == null && date_end == null) {
           return 'unknown';
         } else if (date_start != null && date_end == null) {
@@ -35,6 +36,7 @@ const ListItem = (modalVisible, setModalVisible, setItemId, setDetailTitle,setDe
       
       const [isLiked, setIsLiked] = useState(false);
 
+      //return the list item, set data for detail on click
       if (imageId !=null) {
         return (
           <TouchableHighlight onPress={()=> {setModalVisible(!modalVisible)}}  onPressIn={()=> {{setItemId(id);setDetailTitle(title);setDetailDate(getDateRange());setDetailImage(image_id);setDetailDimensions(dimensions);setDetailArtist(artist_title); setArtistId(artist_id); setDetailDesc(description)}}} underlayColor='lightgray'>

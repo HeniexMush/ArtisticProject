@@ -1,3 +1,4 @@
+//fetch data with known id
 const FetchLiked = async (id,setIsLoading) => {
     try {
       setIsLoading(true);

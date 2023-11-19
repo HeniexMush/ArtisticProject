@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+//set id in likedArt to true or remove it from storage
 const LikeArt = async (id ,setIsLiked) => {
   try {
     let likedArt = await AsyncStorage.getItem('likedArt');
