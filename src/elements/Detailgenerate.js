@@ -62,7 +62,7 @@ const Detailgenerate = (modalVisible, setModalVisible, itemId, detailTitle, deta
     const renderArtist = () => {
       if(detailArtist != null) {
         return (
-          <TouchableOpacity onPressIn={() => fetchArtist()}>
+          <TouchableOpacity onPress={() => fetchArtist()}>
             <Text style={styles.artistText}>{detailArtist}</Text>
           </TouchableOpacity>
         )

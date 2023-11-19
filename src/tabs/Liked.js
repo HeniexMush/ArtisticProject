@@ -22,9 +22,36 @@ const Liked = () => {
   const [detailDesc, setDetailDesc] = useState([]);
   const [imageVisible, setImageVisible] = useState(false);
   const [artistVisible, setArtistVisible] = useState(false);
+  const [isLoading,setIsLoading] = useState(false);
+  const [isButtonDisabled,setIsButtonDisabled] = useState(false);
   const renderItem = ListItem(modalVisible, setModalVisible, setItemId, setDetailTitle,setDetailDate,setDetailImage,setDetailDimensions,setDetailArtist,setDetailDesc,setArtistId);
   const Detail = Detailgenerate(modalVisible, setModalVisible, itemId, detailTitle,detailDate,detailImage,detailDimensions,detailArtist,detailDesc,setImageVisible, setArtistData, setArtistVisible);
 
+
+     const disableButton = () => {
+        setIsButtonDisabled(true);
+        setTimeout(() => {
+          setIsButtonDisabled(false);
+        }, 7000);
+     }
+     
+     
+    const renderList =  () => {
+      if (isLoading) {
+        return (
+          <ActivityIndicator/>
+        )
+      } else {
+        return (
+        <FlatList 
+          data={likedArtworks}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id.toString()}     
+          />
+        )
+      }
+
+    }
   
    const fetchLikedArtIds = async () => {
     
@@ -44,10 +71,9 @@ const Liked = () => {
   const fetchLikedArtData = async () => {
     const likedArtList = [];
     const ids = Object.keys(likedArtIds);
-    
     for (const id of ids) {
       try {
-        const artworkData = await FetchLiked(id);
+        const artworkData = await FetchLiked(id,setIsLoading);
         if (artworkData) {
           likedArtList.push(artworkData);
         }
@@ -56,6 +82,7 @@ const Liked = () => {
       } 
     
     setLikedArtworks(likedArtList);
+    setIsLoading(false);
       
     }
    };
@@ -79,17 +106,11 @@ const Liked = () => {
   ];
   return (
     <View style={styles.background}>
-  
-      <FlatList 
-        data={likedArtworks}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id.toString()}
-        //onEndReached={() =>{fetchLikedArtIds();fetchLikedArtData()}}       
-      />
+      {renderList()}
       <Detail artistId={artistId}  />
       <ZoomableImage visible={imageVisible} title={detailTitle} imageUrls={imageUrls} onClose={() => {setImageVisible(false)}} />
       <ArtistModal artistData={artisData} artistVisible={artistVisible} setArtistVisible={setArtistVisible}/>
-      <TouchableHighlight onPress={() => {fetchLikedArtIds(); fetchLikedArtData()}} style={styles.reloadLikesButton}>
+      <TouchableHighlight onPress={() => {fetchLikedArtIds(); fetchLikedArtData(); disableButton()}} style={styles.reloadLikesButton} disabled={isButtonDisabled}>
         <Text style={styles.reloadLikesText}>Reload Likes</Text>
       </TouchableHighlight>
     </View>

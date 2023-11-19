@@ -1,8 +1,8 @@
-const FetchLiked = async (id) => {
+const FetchLiked = async (id,setIsLoading) => {
     try {
+      setIsLoading(true);
       const response = await fetch(`https://api.artic.edu/api/v1/artworks/${id}?fields=title,id,image_id,date_start,date_end,dimensions,artist_title,artist_id,description`);
       const data = await response.json();
-      console.log(data.data);
       return data.data;
   
     } catch (error) {
@@ -10,6 +10,7 @@ const FetchLiked = async (id) => {
 
   
     }
+    
   };
   
   export default FetchLiked;
